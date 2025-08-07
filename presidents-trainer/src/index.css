@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    color: #111827;
+    background-image: radial-gradient(ellipse at center, rgba(255,243,219,1) 0%, rgba(245,230,200,1) 100%);
+  }
+}
+
+/* Replace @apply utilities with plain CSS for compatibility */
+.card-animated {
+  transition-property: transform, box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.card-animated:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+}
