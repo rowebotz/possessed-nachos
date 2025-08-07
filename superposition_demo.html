@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Superposition — Animated SVG</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      margin: 24px;
+      line-height: 1.5;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 8px 0;
+    }
+    h2 {
+      font-size: 1.1rem;
+      margin: 16px 0 8px 0;
+    }
+    .panel {
+      max-width: 980px;
+      margin: 0 auto;
+      border: 1px solid color-mix(in oklab, currentColor 15%, transparent);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 10px 16px;
+      align-items: center;
+      margin: 12px 0 4px 0;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: color-mix(in oklab, currentColor 75%, transparent);
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      background: color-mix(in oklab, currentColor 4%, white);
+      border-radius: 10px;
+      border: 1px solid color-mix(in oklab, currentColor 12%, transparent);
+    }
+    .legend {
+      font-size: 12px;
+      fill: currentColor;
+    }
+    .axis {
+      stroke: color-mix(in oklab, currentColor 25%, transparent);
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+    }
+    .psi1 { stroke: #1f77b4; }
+    .psi2 { stroke: #e15759; }
+    .psiSum { stroke: #9467bd; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Quantum Superposition (Animated)</h1>
+    <p>
+      This SVG animates two coherent waves, |ψ₁⟩ (blue) and |ψ₂⟩ (red). Their linear combination |ψ⟩ = α|ψ₁⟩ + β|ψ₂⟩ (purple)
+      shows how relative weights and phase determine interference. The plot is illustrative: amplitudes are drawn as waves in
+      space x and evolve with time t; the purple curve is the instantaneous superposed amplitude.
+    </p>
+
+    <div class="controls">
+      <label for="amp1">Amplitude |α| (ψ₁, blue)</label>
+      <input id="amp1" type="range" min="0" max="1" step="0.01" value="0.71" />
+
+      <label for="amp2">Amplitude |β| (ψ₂, red)</label>
+      <input id="amp2" type="range" min="0" max="1" step="0.01" value="0.71" />
+
+      <label for="phase">Relative phase arg(β) − arg(α) [φ]</label>
+      <input id="phase" type="range" min="0" max="6.28318" step="0.01" value="1.1" />
+
+      <label for="speed">Time speed</label>
+      <input id="speed" type="range" min="0" max="3" step="0.01" value="1.0" />
+    </div>
+
+    <div class="note">
+      Tip: Set |α| = |β| = 1/√2 ≈ 0.707 and vary φ to see constructive/destructive interference in the purple curve.
+    </div>
+
+    <svg id="viz" viewBox="0 0 960 360" role="img" aria-label="Animated superposition of two waves and their sum">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,4 L0,8 Z" fill="currentColor" />
+        </marker>
+      </defs>
+
+      <!-- Axes -->
+      <line class="axis" x1="40" y1="180" x2="920" y2="180" marker-end="url(#arrow)" />
+      <line class="axis" x1="40" y1="320" x2="40" y2="20" marker-end="url(#arrow)" />
+
+      <!-- Labels -->
+      <text class="legend" x="926" y="176">x</text>
+      <text class="legend" x="30" y="24">amplitude</text>
+
+      <!-- Legends for curves -->
+      <g class="legend" transform="translate(52,28)">
+        <line x1="0" y1="0" x2="24" y2="0" stroke="#1f77b4" stroke-width="2" />
+        <text x="30" y="4">|ψ₁⟩ (blue)</text>
+      </g>
+      <g class="legend" transform="translate(52,46)">
+        <line x1="0" y1="0" x2="24" y2="0" stroke="#e15759" stroke-width="2" />
+        <text x="30" y="4">|ψ₂⟩ (red)</text>
+      </g>
+      <g class="legend" transform="translate(52,64)">
+        <line x1="0" y1="0" x2="24" y2="0" stroke="#9467bd" stroke-width="3" />
+        <text x="30" y="4">|ψ⟩ = α|ψ₁⟩ + β|ψ₂⟩ (purple)</text>
+      </g>
+
+      <!-- Paths -->
+      <path id="psi1" class="psi1" fill="none" stroke-width="2" />
+      <path id="psi2" class="psi2" fill="none" stroke-width="2" />
+      <path id="psiSum" class="psiSum" fill="none" stroke-width="3" />
+    </svg>
+
+    <h2>What you are seeing</h2>
+    <ul>
+      <li><strong>Linear combination</strong>: The purple curve is αψ₁(x,t) + βψ₂(x,t). Changing |α|, |β| scales each component; changing φ rotates their relative phase.</li>
+      <li><strong>Relative phase matters</strong>: φ controls constructive/destructive interference. Global phase (shifting both equally) is unobservable.</li>
+      <li><strong>Measurement probabilities</strong>: In a basis where these are orthonormal states, probabilities are |α|² and |β|², but the <em>shape</em> of ψ depends on φ as well.</li>
+      <li><strong>Basis dependence</strong>: Superposition depends on the chosen basis. A state can look like a superposition here but be a basis vector elsewhere.</li>
+      <li><strong>Decoherence</strong>: Coupling to an environment suppresses relative phase information, washing out interference and making outcomes classical-like.</li>
+    </ul>
+  </div>
+
+  <script>
+    (function () {
+      const svg = document.getElementById('viz');
+      const pathPsi1 = document.getElementById('psi1');
+      const pathPsi2 = document.getElementById('psi2');
+      const pathPsiSum = document.getElementById('psiSum');
+
+      const amp1El = document.getElementById('amp1');
+      const amp2El = document.getElementById('amp2');
+      const phaseEl = document.getElementById('phase');
+      const speedEl = document.getElementById('speed');
+
+      const width = 960;
+      const height = 360;
+      const leftPad = 40;
+      const rightPad = 40;
+      const plotWidth = width - leftPad - rightPad;
+      const midY = 180;
+      const scaleY = 90; // vertical amplitude scale
+
+      // Wave parameters (illustrative)
+      const spatialFrequency = 2 * Math.PI / 220; // k
+      const angularFrequency = 2.0; // ω (arbitrary units)
+
+      const sampleCount = 300;
+      const xValues = new Array(sampleCount).fill(0).map((_, i) => leftPad + (i / (sampleCount - 1)) * plotWidth);
+
+      function buildPath(points) {
+        let d = '';
+        for (let i = 0; i < points.length; i++) {
+          const [x, y] = points[i];
+          d += (i === 0 ? 'M' : ' L') + x.toFixed(2) + ' ' + y.toFixed(2);
+        }
+        return d;
+      }
+
+      let timeSec = 0;
+      let lastTs = performance.now();
+
+      function animate(now) {
+        const dt = Math.min(0.05, (now - lastTs) / 1000);
+        lastTs = now;
+
+        const amp1 = parseFloat(amp1El.value);
+        const amp2 = parseFloat(amp2El.value);
+        const relPhase = parseFloat(phaseEl.value);
+        const speed = parseFloat(speedEl.value);
+
+        timeSec += dt * speed;
+
+        const points1 = [];
+        const points2 = [];
+        const pointsSum = [];
+
+        // α = |α|, phase 0; β = |β| e^{i φ}
+        // For visualization we draw the real parts of each component and their sum
+        for (let i = 0; i < sampleCount; i++) {
+          const x = xValues[i];
+          const xLocal = x - leftPad;
+          const phase = spatialFrequency * xLocal - angularFrequency * timeSec;
+
+          const y1 = amp1 * Math.sin(phase);
+          const y2 = amp2 * Math.sin(phase + relPhase);
+          const ySum = y1 + y2;
+
+          points1.push([x, midY - y1 * scaleY]);
+          points2.push([x, midY - y2 * scaleY]);
+          pointsSum.push([x, midY - ySum * scaleY]);
+        }
+
+        pathPsi1.setAttribute('d', buildPath(points1));
+        pathPsi2.setAttribute('d', buildPath(points2));
+        pathPsiSum.setAttribute('d', buildPath(pointsSum));
+
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame((ts) => { lastTs = ts; animate(ts); });
+    })();
+  </script>
+</body>
+</html>
