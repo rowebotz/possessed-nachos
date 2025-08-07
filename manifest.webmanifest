@@ -1,0 +1,11 @@
+{
+  "name": "Presidents Quest",
+  "short_name": "Presidents",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0b3d91",
+  "icons": [
+    { "src": "/assets/cheese.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
