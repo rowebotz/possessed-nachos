@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constitution Quest — Learn the U.S. Constitution</title>
+  <meta name="description" content="A beautiful, interactive app to learn the U.S. Constitution with progress tracking, flashcards, quizzes, and a mouse-and-cheese learning game." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app-root">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark">🧀</div>
+        <div class="brand-name">
+          <h1>Constitution Quest</h1>
+          <p>Learn the U.S. Constitution — beautifully.</p>
+        </div>
+      </div>
+      <div class="progress-mini">
+        <div class="streak">🔥 Streak: <span id="streak-count">0</span> days</div>
+        <div class="today">⭐ Today: <span id="today-points">0</span> pts</div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-target="view-dashboard">Dashboard</button>
+      <button class="tab" data-target="view-reader">Reader</button>
+      <button class="tab" data-target="view-flashcards">Flashcards</button>
+      <button class="tab" data-target="view-quiz">Quiz</button>
+      <button class="tab" data-target="view-game">Mouse & Cheese</button>
+      <div class="spacer"></div>
+      <button class="tab ghost" id="toggle-theme" title="Toggle theme">🌗</button>
+      <button class="tab ghost" id="toggle-voice" title="Toggle voice for game">🔊</button>
+    </nav>
+
+    <main class="views">
+      <section id="view-dashboard" class="view active">
+        <div class="panel-grid">
+          <div class="panel hero">
+            <h2>Welcome back! 🐭🧀</h2>
+            <p>Pick an activity to practice today. Earn points to grow your streak.</p>
+            <div class="cta-row">
+              <a class="cta" data-link-target="view-flashcards">Start Flashcards</a>
+              <a class="cta secondary" data-link-target="view-quiz">Take a Quiz</a>
+              <a class="cta tertiary" data-link-target="view-game">Play Mouse & Cheese</a>
+            </div>
+          </div>
+
+          <div class="panel stats">
+            <h3>Your Progress</h3>
+            <div class="stats-row">
+              <div class="stat">
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value" id="stat-streak">0</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Today</div>
+                <div class="stat-value" id="stat-today">0 pts</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Best Day</div>
+                <div class="stat-value" id="stat-best">0 pts</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">All-time</div>
+                <div class="stat-value" id="stat-total">0 pts</div>
+              </div>
+            </div>
+            <canvas id="progress-chart" height="120"></canvas>
+          </div>
+
+          <div class="panel tips">
+            <h3>Study Tip</h3>
+            <p id="daily-tip">Short, daily practice beats cramming. Aim for 10–15 minutes.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-reader" class="view">
+        <div class="panel reader">
+          <h2>Preamble</h2>
+          <p class="preamble" id="preamble-text"></p>
+          <h3>Article Summaries</h3>
+          <div id="article-summaries" class="article-grid"></div>
+        </div>
+      </section>
+
+      <section id="view-flashcards" class="view">
+        <div class="panel flashcards">
+          <div class="flashcard-container">
+            <div id="flashcard" class="flashcard">
+              <div class="flashcard-face front">
+                <div class="prompt" id="flashcard-front"></div>
+                <div class="hint">Tap to flip</div>
+              </div>
+              <div class="flashcard-face back">
+                <div class="answer" id="flashcard-back"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flashcard-actions">
+            <button id="flashcard-wrong" class="btn danger">I forgot</button>
+            <button id="flashcard-right" class="btn success">I knew it</button>
+          </div>
+          <div class="queue-info">
+            <span>Remaining: <strong id="flashcard-remaining">0</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-quiz" class="view">
+        <div class="panel quiz">
+          <div id="quiz-container"></div>
+        </div>
+      </section>
+
+      <section id="view-game" class="view">
+        <div class="panel game">
+          <div class="game-header">
+            <div>Score: <span id="game-score">0</span></div>
+            <div>Best: <span id="game-best">0</span></div>
+            <div>Speed: <input id="game-speed" type="range" min="60" max="220" step="10" value="120" /></div>
+            <button id="game-start" class="btn">Play</button>
+            <button id="game-pause" class="btn secondary">Pause</button>
+          </div>
+          <canvas id="game-canvas" width="480" height="480"></canvas>
+          <p class="game-help">Use arrow keys or WASD on desktop. On mobile, swipe to move. Each cheese triggers a short concept voice-over.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div>Made with ❤️ for better civics</div>
+      <div class="footer-links">
+        <a data-link-target="view-reader">Read</a>
+        <a data-link-target="view-flashcards">Practice</a>
+        <a data-link-target="view-game">Play</a>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
